@@ -1,27 +1,8 @@
 # -*- coding: utf-8 -*-
-from common.Function import Function
+from common.Function import Rosenbrock
 import numpy as np
 import matplotlib.pyplot as pl
 __author__ = 'yixuanhe'
-
-
-class Target(Function):
-    @staticmethod
-    def func(x):
-        return 100*(x[0]**2-x[1])**2 + (1-x[0])**2
-
-    @staticmethod
-    def derivative(x):
-        return np.array([-2*(1-x[0])-400*x[0]*(x[1]-x[0]**2), 200*(x[1]-x[0]**2)])
-
-    @staticmethod
-    def second_derivative(x):
-        sd = [[-400*(x[1]-3*x[0]**2)+2, -400*x[0]],
-              [-400*x[0], 200]]
-        return np.array(sd)
-
-    def size(self):
-        return 2
 
 
 def steepest_descent(target, init=None, alpha0=1, phi=0.5, c=0.001):
@@ -121,7 +102,7 @@ def zoom(alpha, x, p, target, c_1):
 
             alpha[0] = cur_alpha
 
-r = steepest_descent(Target, init=[-1.2, 1])
+r = steepest_descent(Rosenbrock, init=[-1.2, 1])
 x = [i for i in range(len(r))]
 
 pl.plot(x, r)

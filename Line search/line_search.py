@@ -99,6 +99,28 @@ def line_search_with_wolfe(target, init=None, alpha0=1, phi=0.5, c_1=0.001, c_2=
         i += 1
     return alphas
 
+
+def zoom(alpha, x, p, target, c_1):
+    while True:
+        begin = x + alpha[0]*p
+        end = x + alpha[1]*p
+        cur_alpha = alpha[0] + alpha[1]/2
+
+        cur = x + cur_alpha*p
+
+        if target.func(cur) > target.func(x) + c_1*cur_alpha*np.dot(target.derivative(begin), p) \
+                or target.func(cur) > target.func(begin):
+            alpha[1] = cur_alpha
+        else:
+            d_a = np.dot(target.derivative(cur), p)
+            d_0 = np.dot(target.derivative(x), p)
+            if abs(d_a) <= c_1*d_0:
+                return cur_alpha
+            elif d_a*(alpha[1]-alpha[0]) >= 0:
+                alpha[1] = alpha[0]
+
+            alpha[0] = cur_alpha
+
 r = steepest_descent(Target, init=[-1.2, 1])
 x = [i for i in range(len(r))]
 

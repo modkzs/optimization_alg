@@ -65,7 +65,7 @@ def line_search_with_wolfe(target, init=None, alpha0=1, phi=0.5, c_1=0.001, c_2=
             cur = x + alpha*p
             if i > 1:
                 if target.func(cur) > target.func(x) + c_1*alpha*np.dot(target.derivative(x), p) \
-                        or target.func(cur) > target.func(x+ last_alpha*p):
+                        or target.func(cur) > target.func(x + last_alpha*p):
                     alpha = zoom([last_alpha, alpha], x, p, target, c_1, c_2)
                     break
             elif target.func(cur) > target.func(x) + c_1*alpha*np.dot(target.derivative(x), p):
@@ -112,9 +112,10 @@ def zoom(alpha, x, p, target, c_1, c_2):
 
             alpha[0] = cur_alpha
 
-r = line_search_with_wolfe(Rosenbrock, init=[1.2, 1.2])
-x = [i for i in range(len(r))]
+if __name__ == "__main__":
+    r = line_search_with_wolfe(Rosenbrock, init=[1.2, 1.2])
+    x = [i for i in range(len(r))]
 
-pl.plot(x, r)
-pl.show()
+    pl.plot(x, r)
+    pl.show()
 
